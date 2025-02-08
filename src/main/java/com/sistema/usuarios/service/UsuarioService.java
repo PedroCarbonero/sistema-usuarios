@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface UsuarioService {
     public Usuario guardarUsuario(Usuario usuario);
     public Optional<Usuario> buscarUsuarioPorEmail(String email);
-    public List<Usuario> buscarUsuarios();
+    public List<Usuario> listarUsuarios();
     public void eliminarUsuario(Integer id);
 }
