@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.http.HttpRequest;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuario")
@@ -19,9 +20,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/guardar")
-    public ResponseEntity<Usuario> guardarUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> guardarUsuario(@RequestBody Usuario usuario) {
 
-        Usuario userExist = usuarioService.
+        Optional<Usuario> userExist = usuarioService.buscarUsuarioPorEmail(usuario.getEmail());
+        if (userExist.isPresent()) {
+            return ResponseEntity.ok("Usuario ya existe, pruebe con otro email.");
+        }
 
         return ResponseEntity.ok(usuarioService.guardarUsuario(usuario));
     }
