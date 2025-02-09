@@ -82,7 +82,7 @@ public class Usuario implements Serializable {
         this.password = password;
     }
 
-    public boolean isEstado() {
+    public boolean getEstado() {
         return estado;
     }
 

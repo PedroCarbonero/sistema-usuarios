@@ -1,5 +1,6 @@
 package com.sistema.usuarios.service.Impl;
 
+import com.sistema.usuarios.dto.UsuarioDto;
 import com.sistema.usuarios.entity.Usuario;
 import com.sistema.usuarios.repository.UsuarioRepository;
 import com.sistema.usuarios.service.UsuarioService;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -48,12 +50,25 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
+    public List<UsuarioDto> listarUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream().map(user -> new UsuarioDto(user.getNombre(), user.getApellido(),
+                user.getEmail(), user.getEstado())).collect(Collectors.toList());
     }
 
     @Override
     public void eliminarUsuario(Integer id) {
         usuarioRepository.deleteById(id);
+    }
+
+    @Override
+    public void cambiarEstadoUsuario(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario no existe");
+        }
+
+        usuario.setEstado(!usuario.getEstado());
+        usuarioRepository.save(usuario);
     }
 }

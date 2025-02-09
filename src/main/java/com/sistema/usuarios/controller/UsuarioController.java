@@ -1,5 +1,6 @@
 package com.sistema.usuarios.controller;
 
+import com.sistema.usuarios.dto.UsuarioDto;
 import com.sistema.usuarios.entity.Usuario;
 import com.sistema.usuarios.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +33,9 @@ public class UsuarioController {
 
     @GetMapping("/listar")
     public ResponseEntity<?> listarUsuarios() {
-        return ResponseEntity.ok(usuarioService.listarUsuarios());
+        List<UsuarioDto> usuarioDtosList = usuarioService.listarUsuarios();
+        return ResponseEntity.ok(usuarioDtosList);
     }
+
+
 }
